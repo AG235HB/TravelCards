@@ -25,6 +25,7 @@ namespace TravelCards
     {
         List<string> cities = new List<string>();
         List<Card> cards = new List<Card>();
+        Roadmap roadmap = new Roadmap();
 
         public MainWindow()
         {
@@ -128,11 +129,11 @@ namespace TravelCards
                 //    counter++;
                 //}
 
-                Roadmap roadmap = new Roadmap();
                 foreach (string cityname in cities)
                     roadmap.AddCity(new City(cityname));
                 foreach (Card c in cards)
-                    roadmap.AddRoad(new Road(new City(c.DeparturePoint), new City(c.ArrivalPoint)));
+                    roadmap.AddRoad(new Road(roadmap.GetCity(c.DeparturePoint), roadmap.GetCity(c.ArrivalPoint)));
+                //roadmap.AddRoad(new Road(new City(c.DeparturePoint), new City(c.ArrivalPoint)));
 
                 /*
                 for(int i=0;i<cards.Count;i++)
@@ -194,7 +195,9 @@ namespace TravelCards
                 }
                 else
                 {
-                    List<Card> sortedCards = new List<Card>();
+                    //List<Card> sortedCards = new List<Card>();
+
+                    List<Road> resultRoute = roadmap.CalculateRoute(cb_start.SelectedItem.ToString(), cb_finish.SelectedItem.ToString());
 
 
                     //for (int i = 0; i < cards.Count; i++)
@@ -220,7 +223,7 @@ namespace TravelCards
                     //    }
                     //}
 
-
+                    MessageBox.Show("DONE!");
                 }
             }
             catch (Exception ex)

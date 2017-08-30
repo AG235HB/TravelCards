@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.GraphModel;
 using System.Runtime.Serialization;
+using System.Windows;
 
 namespace TravelCards
 {
@@ -31,12 +32,43 @@ namespace TravelCards
             roads.Add(road);
         }
 
-        private City GetCity(string cityName)
+        public City GetCity(string cityName)
         {
             foreach(City c in cities)
                 if (c.cityName == cityName)
                     return c;
             return null;
+        }
+
+        private void GetRoutePoint(List<Road> roads, City fromCity, City currentCity, City requredCity)
+        {
+            roads.Add(new Road(fromCity, currentCity));
+            if (currentCity == requredCity)
+            {
+                //roads.Add(new Road(fromCity, currentCity));
+                return;
+            }
+            else if (currentCity.citiesOut.Count > 0)
+            {
+                foreach (City c in currentCity.citiesOut)
+                {
+                    if (c == requredCity)
+                        GetRoutePoint(roads, currentCity, c, requredCity);
+                    else
+                        GetRoutePoint(roads, currentCity, c, requredCity);
+                }
+            }
+            else
+                //MessageBox.Show("Невозможно найти путь");
+                return;
+        }
+
+        public List<Road> CalculateRoute(string start, string finish)
+        {
+            City startCity = GetCity(start), finishCity = GetCity(finish);
+            List<Road> route = new List<Road>();
+            GetRoutePoint(route, null, startCity, finishCity);
+            return route;
         }
     }
 }
