@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.GraphModel;
-using System.Runtime.Serialization;
-using System.Windows;
+﻿using System.Collections.Generic;
 
 namespace TravelCards
 {
@@ -46,40 +39,21 @@ namespace TravelCards
         {
             Node currentNode = new Node(lastNode, currentCity.cityName);
             tree.AddNode(lastNode, currentCity.cityName);
-            //roads.Add(new Road(fromCity, currentCity));
             if (currentCity == requredCity)
             {
-                //roads.Add(new Road(fromCity, currentCity));
-                /*List<Card> */resultCards = new List<Card>();
+                resultCards = new List<Card>();
                 tree.GetRoute(resultCards, currentNode);
                 return;
             }
             else if (currentCity.citiesOut.Count > 0)
-            {
                 foreach (City c in currentCity.citiesOut)
-                {
-                    //if (c == requredCity)
-                    //    GetRoutePoint(currentNode, currentCity, c, requredCity);
-                    //else
-                        GetRoutePoint(currentNode, currentCity, c, requredCity);
-                }
-            }
-            //else
-            //MessageBox.Show("Невозможно найти путь");
-            //return;
+                    GetRoutePoint(currentNode, currentCity, c, requredCity);
         }
 
         public List<Card> CalculateRoute(string start, string finish)
         {
-            //City startCity = GetCity(start), finishCity = GetCity(finish);
-            //List<Road> route = new List<Road>();
-            //GetRoutePoint(route, null, startCity, finishCity);
-            //return route;
-
-            //tree.AddNode(null, start);
             GetRoutePoint(null, null, GetCity(start), GetCity(finish));
             return resultCards;
-            //MessageBox.Show("");
         }
 
         public bool GetCities(string start, string finish)

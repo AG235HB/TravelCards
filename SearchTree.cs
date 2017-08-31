@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TravelCards
 {
@@ -21,7 +17,6 @@ namespace TravelCards
             while (node.parent != null)
             {
                 cards.Add(new Card(node.GetParent().name, node.name));
-                //cards.Add(new Card(node.name, node.GetParent().name));
                 node = node.parent;
             }
         }
