@@ -74,11 +74,14 @@ namespace TravelCards
                 {
                     string city0 = tmpList[rnd.Next(tmpList.Count)];
                     string city1 = tmpList[rnd.Next(tmpList.Count)];
-                    cards.Add(new Card(city0, city1));
-                    cardsCount--;
+                    if (city0 != city1)
+                    {
+                        cards.Add(new Card(city0, city1));
+                        cardsCount--;
+                    }
                 }
                 //удаляем дубликаты
-                for(int i=1;i<cards.Count;i++)
+                for(int i=0;i<cards.Count;i++)
                 {
                     var cs = new CardSearch(cards[i].DeparturePoint, cards[i].ArrivalPoint);
                     for(int j=i+1;j<cards.Count;j++)
@@ -159,7 +162,7 @@ namespace TravelCards
             { MessageBox.Show("Exception!\n" + ex.Message); }
         }
 
-        private void FillChildren(List<Card> cards, Node node)
+        /*private void FillChildren(List<Card> cards, Node node)
         {
             for (int i = 0; i < cards.Count; i++)
             {
@@ -182,7 +185,7 @@ namespace TravelCards
                 foreach (Node arrNode in n.ArrCities)
                     FillChildren(cards, arrNode);
             }
-        }
+        }*/
 
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
@@ -197,7 +200,8 @@ namespace TravelCards
                 {
                     //List<Card> sortedCards = new List<Card>();
 
-                    List<Road> resultRoute = roadmap.CalculateRoute(cb_start.SelectedItem.ToString(), cb_finish.SelectedItem.ToString());
+                    //List<List<Card>> res = new List<List<Card>>();
+                    /*List<Road> resultRoute = */List<Card> resultCards = roadmap.CalculateRoute(cb_start.SelectedItem.ToString(), cb_finish.SelectedItem.ToString());
 
 
                     //for (int i = 0; i < cards.Count; i++)
@@ -206,21 +210,24 @@ namespace TravelCards
                     //    if (sortedCards[i].ArrivalPoint == cb_finish.SelectedValue.ToString())
                     //    {
                     //        MessageBox.Show("Маршрут построен");
-                    //        DataTable dt = new DataTable();
-                    //        dt.Columns.Add("Отправление");
-                    //        dt.Columns.Add("Прибытие");
-                    //        foreach (Card c in sortedCards)
-                    //        {
-                    //            dt.Rows.Add(c.DeparturePoint, c.ArrivalPoint);
-                    //        }
-                    //        dataGrid1.ItemsSource = dt.DefaultView;
-                    //        break;
-                    //    }
-                    //    else
-                    //    {
-                    //        MessageBox.Show("Не удалось построить маршрут между выбранными пунктами");
-                    //        break;
-                    //    }
+                    if (resultCards.Count == 0)
+                        MessageBox.Show("Не удалось построить маршрут между выбранными пунктами");
+                    else
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add("Отправление");
+                        dt.Columns.Add("Прибытие");
+                        for (int i = resultCards.Count; i > 0; i--)
+                            dt.Rows.Add(resultCards[i - 1].DeparturePoint, resultCards[i - 1].ArrivalPoint);
+                        dataGrid1.ItemsSource = dt.DefaultView;
+                    }
+                        //        break;
+                        //    }
+                        //    else
+                        //    {
+                        //        MessageBox.Show("Не удалось построить маршрут между выбранными пунктами");
+                        //        break;
+                        //    }
                     //}
 
                     MessageBox.Show("DONE!");

@@ -13,6 +13,8 @@ namespace TravelCards
     {
         public readonly List<City> cities = new List<City>();
         public readonly List<Road> roads = new List<Road>();
+        SearchTree tree = new SearchTree();
+        List<Card> resultCards = new List<Card>();
 
         public Roadmap() { }
 
@@ -40,35 +42,59 @@ namespace TravelCards
             return null;
         }
 
-        private void GetRoutePoint(List<Road> roads, City fromCity, City currentCity, City requredCity)
+        private void GetRoutePoint(Node lastNode, City fromCity, City currentCity, City requredCity)
         {
-            roads.Add(new Road(fromCity, currentCity));
+            Node currentNode = new Node(lastNode, currentCity.cityName);
+            tree.AddNode(lastNode, currentCity.cityName);
+            //roads.Add(new Road(fromCity, currentCity));
             if (currentCity == requredCity)
             {
                 //roads.Add(new Road(fromCity, currentCity));
+                /*List<Card> */resultCards = new List<Card>();
+                tree.GetRoute(resultCards, currentNode);
                 return;
             }
             else if (currentCity.citiesOut.Count > 0)
             {
                 foreach (City c in currentCity.citiesOut)
                 {
-                    if (c == requredCity)
-                        GetRoutePoint(roads, currentCity, c, requredCity);
-                    else
-                        GetRoutePoint(roads, currentCity, c, requredCity);
+                    //if (c == requredCity)
+                    //    GetRoutePoint(currentNode, currentCity, c, requredCity);
+                    //else
+                        GetRoutePoint(currentNode, currentCity, c, requredCity);
                 }
             }
-            else
-                //MessageBox.Show("Невозможно найти путь");
-                return;
+            //else
+            //MessageBox.Show("Невозможно найти путь");
+            //return;
         }
 
-        public List<Road> CalculateRoute(string start, string finish)
+        public List<Card> CalculateRoute(string start, string finish)
         {
-            City startCity = GetCity(start), finishCity = GetCity(finish);
-            List<Road> route = new List<Road>();
-            GetRoutePoint(route, null, startCity, finishCity);
-            return route;
+            //City startCity = GetCity(start), finishCity = GetCity(finish);
+            //List<Road> route = new List<Road>();
+            //GetRoutePoint(route, null, startCity, finishCity);
+            //return route;
+
+            //tree.AddNode(null, start);
+            GetRoutePoint(null, null, GetCity(start), GetCity(finish));
+            return resultCards;
+            //MessageBox.Show("");
+        }
+
+        public bool GetCities(string start, string finish)
+        {
+            bool machD = false, machA = false;
+            foreach(City c in cities)
+            {
+                if (c == GetCity(start))
+                    machD = true;
+                if (c == GetCity(finish))
+                    machA = true;
+            }
+            if (machD && machA)
+                return true;
+            else return false;
         }
     }
 }

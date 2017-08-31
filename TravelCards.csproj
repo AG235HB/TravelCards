@@ -58,6 +58,7 @@
     <Compile Include="City.cs" />
     <Compile Include="Road.cs" />
     <Compile Include="Roadmap.cs" />
+    <Compile Include="SearchTree.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
